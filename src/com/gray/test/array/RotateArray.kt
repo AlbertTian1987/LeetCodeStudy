@@ -27,6 +27,24 @@ import java.util.*
  * 要求使用空间复杂度为 O(1) 的原地算法。
  */
 
+
+fun maxCommonDivider(m: Int, n: Int): Int {
+    if (m == 0 || n == 0) {
+        throw IllegalArgumentException("args can not be zero")
+    }
+    var mm = m
+    var nn = n
+
+    if (mm < nn) {
+        mm = nn.also { nn = mm }
+    }
+
+    while (mm % nn != 0) {
+        mm = nn.also { nn = mm % nn }
+    }
+    return nn
+}
+
 fun rotate(nums: IntArray, k: Int) {
     if (nums.isEmpty() || k % nums.size == 0) {
         return
@@ -36,11 +54,8 @@ fun rotate(nums: IntArray, k: Int) {
         var index = i
         var temp = nums[index]
         repeat(nums.size / maxCommonDivider) {
-            val nextIndex = (index + k) % nums.size
-            val v = nums[nextIndex]
-            nums[nextIndex] = temp
-            temp = v
-            index = nextIndex
+            index = (index + k) % nums.size
+            nums[index] = temp.also { temp = nums[index] }
         }
     }
 }
@@ -69,27 +84,27 @@ fun rotate2(nums: IntArray, k: Int) {
     }
 }
 
-
-fun maxCommonDivider(m: Int, n: Int): Int {
-    if (m == 0 || n == 0) {
-        throw IllegalArgumentException("args can not be zero")
+fun reverse(nums: IntArray, low: Int, hi: Int) {
+    var i = low
+    var j = hi
+    while (j > i) {
+        nums[i] = nums[j].also { nums[j] = nums[i] }
+        j--
+        i++
     }
-    var mm = m
-    var nn = n
-
-    if (mm < nn) {
-        val temp = mm
-        mm = nn
-        nn = temp
-    }
-
-    while (mm % nn != 0) {
-        val temp = mm % nn
-        mm = nn
-        nn = temp
-    }
-    return nn
 }
+
+fun rotate3(nums: IntArray, k: Int) {
+    if (nums.isEmpty() || k % nums.size == 0) {
+        return
+    }
+    val size = nums.size
+    val sk = k % size
+    reverse(nums, 0, size - 1)
+    reverse(nums, 0, sk)
+    reverse(nums, sk, size - 1)
+}
+
 
 fun main() {
 
@@ -106,12 +121,17 @@ fun main() {
     testAllRotateMethod(intArrayOf(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12), 6)
 
     testAllRotateMethod(intArrayOf(1, 2, 3, 4, 5, 6), 4)
+
 }
 
 private fun testAllRotateMethod(nums: IntArray, k: Int) {
     val nums1 = Arrays.copyOf(nums, nums.size)
+    val nums2 = Arrays.copyOf(nums, nums.size)
     rotate(nums, k)
     rotate2(nums1, k)
+    rotate3(nums2, k)
     println(Arrays.toString(nums))
+
     assert(nums.contentEquals(nums1))
+    assert(nums.contentEquals(nums2))
 }
