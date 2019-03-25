@@ -1,6 +1,5 @@
 package com.gray.test.array
 
-import java.lang.IllegalArgumentException
 import java.util.*
 
 /**
@@ -29,29 +28,15 @@ import java.util.*
  */
 
 fun rotate(nums: IntArray, k: Int) {
-
-    if (k == 0) {
+    if (nums.isEmpty() || k % nums.size == 0) {
         return
     }
-
-    val size = nums.size
-
-    val realK = if (k == size) {
-        k
-    } else {
-        k % size
-    }
-
-    if (size <= 1 || size == realK) {
-        return
-    }
-
-    val maxCommonDivider = maxCommonDivider(size, realK)
-    repeat(maxCommonDivider){i->
+    val maxCommonDivider = maxCommonDivider(nums.size, k)
+    repeat(maxCommonDivider) { i ->
         var index = i
         var temp = nums[index]
-        repeat(size/maxCommonDivider) {
-            val nextIndex = (index + realK) % size
+        repeat(nums.size / maxCommonDivider) {
+            val nextIndex = (index + k) % nums.size
             val v = nums[nextIndex]
             nums[nextIndex] = temp
             temp = v
@@ -60,57 +45,73 @@ fun rotate(nums: IntArray, k: Int) {
     }
 }
 
-fun maxCommonDivider(m:Int,n:Int):Int{
-    if (m == 0 || n == 0){
+fun rotate2(nums: IntArray, k: Int) {
+
+    if (nums.isEmpty() || k % nums.size == 0) {
+        return
+    }
+
+    var temp1 = nums[0]
+    var temp2: Int
+    var index = 0
+    var start = 0
+    repeat(nums.size) {
+        index = (index + k) % nums.size
+        temp2 = nums[index]
+        nums[index] = temp1
+        temp1 = if (index == start) {
+            start++
+            index++
+            nums[index]
+        } else {
+            temp2
+        }
+    }
+}
+
+
+fun maxCommonDivider(m: Int, n: Int): Int {
+    if (m == 0 || n == 0) {
         throw IllegalArgumentException("args can not be zero")
     }
     var mm = m
     var nn = n
 
-    if (mm < nn){
+    if (mm < nn) {
         val temp = mm
         mm = nn
         nn = temp
     }
 
-    while (mm % nn != 0){
+    while (mm % nn != 0) {
         val temp = mm % nn
         mm = nn
-        nn= temp
+        nn = temp
     }
     return nn
 }
 
 fun main() {
 
-    var nums = intArrayOf(1, 2, 3, 4, 5, 6, 7)
-    rotate(nums, 3)
+    testAllRotateMethod(intArrayOf(1, 2, 3, 4, 5, 6, 7), 3)
+
+    testAllRotateMethod(intArrayOf(1, 2), 2)
+
+    testAllRotateMethod(intArrayOf(-1, -100, 3, 99), 2)
+
+    testAllRotateMethod(intArrayOf(1, 2, 3), 2)
+
+    testAllRotateMethod(intArrayOf(1, 2, 3, 4, 5, 6), 1)
+
+    testAllRotateMethod(intArrayOf(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12), 6)
+
+    testAllRotateMethod(intArrayOf(1, 2, 3, 4, 5, 6), 4)
+}
+
+private fun testAllRotateMethod(nums: IntArray, k: Int) {
+    val nums1 = Arrays.copyOf(nums, nums.size)
+    rotate(nums, k)
+    rotate2(nums1, k)
     println(Arrays.toString(nums))
-
-    nums = intArrayOf(1, 2)
-    rotate(nums, 2)
-    println(Arrays.toString(nums))
-
-    nums = intArrayOf(-1, -100, 3, 99)
-    rotate(nums, 2)
-    println(Arrays.toString(nums))
-
-
-    nums = intArrayOf(1, 2, 3)
-    rotate(nums, 2)
-    println(Arrays.toString(nums))
-
-
-    nums = intArrayOf(1, 2, 3, 4, 5, 6)
-    rotate(nums, 1)
-    println(Arrays.toString(nums))
-
-    nums = intArrayOf(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12)
-    rotate(nums, 6)
-    println(Arrays.toString(nums))
-
-    nums = intArrayOf(1, 2, 3, 4, 5, 6)
-    rotate(nums, 4)
-    println(Arrays.toString(nums))
-
+    assert(nums.contentEquals(nums1))
 }
