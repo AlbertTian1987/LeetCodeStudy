@@ -101,7 +101,7 @@ fun rotate3(nums: IntArray, k: Int) {
     val size = nums.size
     val sk = k % size
     reverse(nums, 0, size - 1)
-    reverse(nums, 0, sk)
+    reverse(nums, 0, sk - 1)
     reverse(nums, sk, size - 1)
 }
 
