@@ -1,6 +1,7 @@
 package com.gray.test.array
 
 import java.util.*
+import kotlin.test.assertTrue
 
 /**
  * 旋转数组
@@ -132,6 +133,6 @@ private fun testAllRotateMethod(nums: IntArray, k: Int) {
     rotate3(nums2, k)
     println(Arrays.toString(nums))
 
-    assert(nums.contentEquals(nums1))
-    assert(nums.contentEquals(nums2))
+    assertTrue(nums.contentEquals(nums1))
+    assertTrue(nums.contentEquals(nums2))
 }
