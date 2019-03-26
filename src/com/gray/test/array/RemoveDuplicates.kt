@@ -17,7 +17,7 @@ package com.gray.test.array
  */
 fun IntArray.print(size: Int) {
     print("size is $size, data is: ")
-    println(this.toList().subList(0,size).toString())
+    println(this.toList().subList(0, size).toString())
 }
 
 fun removeDuplicates(nums: IntArray): Int {
@@ -40,7 +40,7 @@ fun main() {
     var size = removeDuplicates(nums)
     nums.print(size)
 
-    nums = intArrayOf(0,0,1,1,1,2,2,3,3,4)
+    nums = intArrayOf(0, 0, 1, 1, 1, 2, 2, 3, 3, 4)
     size = removeDuplicates(nums)
     nums.print(size)
 }

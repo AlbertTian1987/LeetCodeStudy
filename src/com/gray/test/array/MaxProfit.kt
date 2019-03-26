@@ -32,8 +32,8 @@ fun maxProfit(prices: IntArray): Int {
     var profit = 0
     var temp: Int
     for (i in 0..prices.size - 2) {
-        temp = prices[i+1] - prices[i]
-        if (temp > 0){
+        temp = prices[i + 1] - prices[i]
+        if (temp > 0) {
             profit += temp
         }
     }

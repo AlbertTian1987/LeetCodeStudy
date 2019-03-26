@@ -40,9 +40,9 @@ fun containsDuplicate2(nums: IntArray): Boolean {
 
     val set = hashSetOf<Int>()
     nums.forEach {
-        if (set.contains(it)){
+        if (set.contains(it)) {
             return true
-        }else{
+        } else {
             set.add(it)
         }
     }
