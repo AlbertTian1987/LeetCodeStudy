@@ -44,17 +44,50 @@ fun moveZeroes(nums: IntArray) {
     }
 }
 
+fun moveZeroes2(nums: IntArray) {
+    if (nums.size < 2) {
+        return
+    }
+
+    var left = 0
+    var right = 0
+
+    while (right < nums.size) {
+        if (nums[right] != 0) {
+            if (left != right) {
+                nums[left] = nums[right].also { nums[right] = nums[left] }
+                left++
+            } else {
+                left++
+            }
+        }
+        right++
+    }
+}
+
 fun main() {
     var ints = intArrayOf(0, 1, 0, 3, 12)
     moveZeroes(ints)
+    println(Arrays.toString(ints))
+
+    ints = intArrayOf(0, 1, 0, 3, 12)
+    moveZeroes2(ints)
     println(Arrays.toString(ints))
 
     ints = intArrayOf(0)
     moveZeroes(ints)
     println(Arrays.toString(ints))
 
+    ints = intArrayOf(0)
+    moveZeroes2(ints)
+    println(Arrays.toString(ints))
+
     ints = intArrayOf(0, 1)
     moveZeroes(ints)
+    println(Arrays.toString(ints))
+
+    ints = intArrayOf(0, 1)
+    moveZeroes2(ints)
     println(Arrays.toString(ints))
 
 
@@ -62,7 +95,15 @@ fun main() {
     moveZeroes(ints)
     println(Arrays.toString(ints))
 
+    ints = intArrayOf(1, 0)
+    moveZeroes2(ints)
+    println(Arrays.toString(ints))
+
     ints = intArrayOf(1, 0, 2, 0, 3, 0, 4, 0, 0, 5)
     moveZeroes(ints)
+    println(Arrays.toString(ints))
+
+    ints = intArrayOf(1, 0, 2, 0, 3, 0, 4, 0, 0, 5)
+    moveZeroes2(ints)
     println(Arrays.toString(ints))
 }
