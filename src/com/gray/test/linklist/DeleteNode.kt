@@ -23,8 +23,6 @@ package com.gray.test.linklist
  *      给定的节点为非末尾节点并且一定是链表中的一个有效节点。
  *      不要从你的函数中返回任何结果。
  * */
-data class ListNode(var value: Int, var next: ListNode? = null)
-
 fun deleteNode(node: ListNode) {
     val next = node.next!!
     node.value = next.value
@@ -32,17 +30,7 @@ fun deleteNode(node: ListNode) {
 }
 
 fun main() {
-    val head = ListNode(4)
-    val node1 = ListNode(5)
-    val node2 = ListNode(1)
-    val node3 = ListNode(9)
-    head.next = node1
-    node1.next = node2
-    node2.next = node3
-    deleteNode(node1)
-    var node: ListNode? = head
-    while (node != null) {
-        println(node.value)
-        node = node.next
-    }
+    val head = createListNode(intArrayOf(4,5,1,9))
+    deleteNode(head.next!!)
+    head.print()
 }
