@@ -25,7 +25,15 @@ fun reverseList(head: ListNode?): ListNode? {
     }
     return pre
 }
-
+fun reverseList2(head: ListNode?):ListNode?{
+    if (head?.next == null){
+        return head
+    }
+    val newhead = reverseList2(head.next)
+    head.next!!.next = head
+    head.next = null
+    return newhead
+}
 fun main() {
     var head: ListNode? = createListNode(intArrayOf(1, 2, 3, 4, 5))
     head = reverseList(head)
@@ -34,4 +42,8 @@ fun main() {
     head = createListNode(intArrayOf(1))
     head = reverseList(head)
     head.print()
+
+    reverseList2(createListNode(intArrayOf(1,2,3,4,5))).print()
+    reverseList2(createListNode(intArrayOf(1))).print()
+    reverseList2(null).print()
 }

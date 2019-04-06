@@ -25,6 +25,8 @@ import java.util.*
  * 再从头遍历，同时弹出栈中元素比较
  * 若相等则是回文
  * 注意最多只需要比较size/2+1次即可
+ *
+ * 这种方法不好。。。。。。第一次自己的解法真烂
  */
 fun isPalindrome(head: ListNode?): Boolean {
     if (head?.next == null) {
@@ -135,21 +137,55 @@ fun isPalindrome3(head: ListNode?): Boolean {
     return true
 }
 
+/**
+ * 这种解法，用两个快慢指针，快指针每次遍历两个，慢的遍历一个，
+ * 所以快指针到末尾时，慢指针刚好到一半的位置。
+ * 将慢指针之后的列表颠倒，然后和前半部分对比是否相同即可
+ */
+fun isPalindrome4(head: ListNode?): Boolean{
+    if (head?.next == null){
+        return false
+    }
+    var slow = head
+    var fast = head
+    while (fast?.next!=null){
+        fast = fast.next?.next
+        slow = slow!!.next
+    }
+    slow = reverseList2(slow)
+    var cur = head
+    while (slow!=null){
+        if (cur!!.value == slow.value){
+            cur = cur.next
+            slow = slow.next
+        }else{
+            return false
+        }
+    }
+    return true
+}
 fun main() {
     println(isPalindrome(createListNode(intArrayOf(1, 2, 2, 1))))
     println(isPalindrome(createListNode(intArrayOf(1, 2, 1, 2, 1))))
     println(isPalindrome(createListNode(intArrayOf(1, 2))))
     println(isPalindrome(createListNode(intArrayOf(1, 0, 0))))
-    println()
+    println("2")
     println(isPalindrome2(createListNode(intArrayOf(1, 2, 2, 1))))
     println(isPalindrome2(createListNode(intArrayOf(1, 2, 1, 2, 1))))
     println(isPalindrome2(createListNode(intArrayOf(1, 2, 2, 2, 1))))
     println(isPalindrome2(createListNode(intArrayOf(1, 1, 2, 1))))
     println(isPalindrome2(createListNode(intArrayOf(1, 2))))
-    println()
+    println("3")
     println(isPalindrome3(createListNode(intArrayOf(1, 2, 2, 1))))
     println(isPalindrome3(createListNode(intArrayOf(1, 2, 1, 2, 1))))
     println(isPalindrome3(createListNode(intArrayOf(1, 1, 2, 1))))
     println(isPalindrome3(createListNode(intArrayOf(1, 2))))
     println(isPalindrome3(createListNode(intArrayOf(1, 0, 0))))
+    println("4")
+    println(isPalindrome4(createListNode(intArrayOf(1, 2, 2, 1))))
+    println(isPalindrome4(createListNode(intArrayOf(1, 2, 1, 2, 1))))
+    println(isPalindrome4(createListNode(intArrayOf(1, 1, 2, 1))))
+    println(isPalindrome4(createListNode(intArrayOf(1, 1))))
+    println(isPalindrome4(createListNode(intArrayOf(1, 2))))
+    println(isPalindrome4(createListNode(intArrayOf(1, 0, 0))))
 }
