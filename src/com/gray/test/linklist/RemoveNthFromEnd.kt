@@ -52,12 +52,9 @@ fun main() {
     var head = createListNode(intArrayOf(1,2,3,4,5))
     head = removeNthFromEnd(head,2)
     head.print()
-    println()
     head = createListNode(intArrayOf(1,2,3,4,5))
     head = removeNthFromEnd(head,5)
     head.print()
-
-    println()
     head = createListNode(intArrayOf(1,2,3,4,5))
     head = removeNthFromEnd(head,1)
     head.print()

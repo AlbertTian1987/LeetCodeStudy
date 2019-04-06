@@ -2,12 +2,22 @@ package com.gray.test.linklist
 
 data class ListNode(var value: Int, var next: ListNode? = null)
 
-fun ListNode.print() {
+fun ListNode?.print() {
+    if (this == null) {
+        println("Node:[]")
+        return
+    }
+    print("Node:[")
     var node: ListNode? = this
     while (node != null) {
-        println(node.value)
+        print(node.value)
         node = node.next
+        if (node != null) {
+            print("->")
+        }
     }
+    print("]")
+    println()
 }
 
 fun createListNode(intArray: IntArray): ListNode {

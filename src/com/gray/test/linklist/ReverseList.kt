@@ -29,11 +29,9 @@ fun reverseList(head: ListNode?): ListNode? {
 fun main() {
     var head: ListNode? = createListNode(intArrayOf(1, 2, 3, 4, 5))
     head = reverseList(head)
-    head?.print()
-    println()
+    head.print()
 
     head = createListNode(intArrayOf(1))
     head = reverseList(head)
-    head?.print()
-    println()
+    head.print()
 }
