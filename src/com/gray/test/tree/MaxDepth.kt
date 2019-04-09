@@ -70,7 +70,7 @@ fun maxDepth2(root: TreeNode?): Int {
 
 
 fun main() {
-    val node = createTreeNode(arrayListOf(3, 9, 20, null, null, 15, 7))
+    val node = createTreeNode(linkedListOf(arrayListOf(3, 9, 20, null, null, 15, 7)))
     println(maxDepth(node))
     println(maxDepth2(node))
 }

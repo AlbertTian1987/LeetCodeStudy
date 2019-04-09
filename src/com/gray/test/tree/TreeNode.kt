@@ -7,31 +7,40 @@ class TreeNode(var `val`: Int) {
     var right: TreeNode? = null
 }
 
-fun createTreeNode(array: MutableList<Int?>): TreeNode? {
-    if (array.isEmpty()) {
+fun linkedListOf(list: MutableList<Int?>): LinkedList<Int?> {
+    val linkedList = LinkedList<Int?>()
+    list.forEach { linkedList.add(it) }
+    return linkedList
+}
+
+fun createTreeNode(values: LinkedList<Int?>): TreeNode? {
+    if (values.isEmpty()) {
         return null
     }
-    if (array.size == 1) {
-        return array[0]?.let {
-            TreeNode(it)
-        }
+    if (values.size == 1) {
+        return values[0]?.let { TreeNode(it) }
     }
-    val node = TreeNode(array[0]!!)
-    val stack = Stack<TreeNode>()
-    stack.push(node)
+    val queue = LinkedList<TreeNode?>()
+    val root = TreeNode(values.poll()!!)
+    queue.add(root)
+    while (values.isEmpty().not()) {
+        assignTreeNode(queue, values)
+    }
+    return root
+}
 
-    var i = 1
-    while (i < array.size) {
-        val n = stack.pop()
-        val left = array[i]?.let { TreeNode(it) }
-        n.left = left
-        if (i + 1 < array.size) {
-            val right = array[i + 1]?.let { TreeNode(it) }
-            n.right = right
-            right?.let { stack.push(it) }
-        }
-        left?.let { stack.push(it) }
-        i += 2
+private fun assignTreeNode(queue: LinkedList<TreeNode?>, values: LinkedList<Int?>) {
+    if (values.isEmpty()) {
+        return
     }
-    return node
+    val root = queue.poll()
+    if (root == null) {
+        values.poll()
+        values.poll()
+    } else {
+        root.left = values.poll()?.let { TreeNode(it) }
+        queue.add(root.left)
+        root.right = values.poll()?.let { TreeNode(it) }
+        queue.add(root.right)
+    }
 }

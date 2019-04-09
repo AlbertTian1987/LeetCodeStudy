@@ -93,15 +93,15 @@ fun isValidBST2(root: TreeNode?): Boolean {
 
 
 fun main() {
-    val node = createTreeNode(arrayListOf(2, 1, 3))
+    val node = createTreeNode(linkedListOf(arrayListOf(2, 1, 3)))
     println(isValidBST(node))
     println(isValidBST2(node))
 
-    val node1 = createTreeNode(arrayListOf(5, 1, 4, null, null, 3, 6))
+    val node1 = createTreeNode(linkedListOf(arrayListOf(5, 1, 4, null, null, 3, 6)))
     println(isValidBST(node1))
     println(isValidBST2(node1))
 
-    val node2 = createTreeNode(arrayListOf(10, 5, 15, null, null, 6, 20))
+    val node2 = createTreeNode(linkedListOf(arrayListOf(10, 5, 15, null, null, 6, 20)))
     println(isValidBST(node2))
     println(isValidBST2(node2))
 }
