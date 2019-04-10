@@ -1,2 +1,2 @@
-# GrayATest
+# LeetCodeStudy
 LeetCode刷题
