@@ -1,9 +1,10 @@
 package com.gray.test.linklist
 
-data class ListNode(var value: Int, var next: ListNode? = null){
+data class ListNode(var value: Int, var next: ListNode? = null) {
     override fun hashCode(): Int {
         return super.hashCode()
     }
+
     override fun equals(other: Any?): Boolean {
         return super.equals(other)
     }

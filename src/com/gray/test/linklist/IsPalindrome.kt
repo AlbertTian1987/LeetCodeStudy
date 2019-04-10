@@ -142,28 +142,29 @@ fun isPalindrome3(head: ListNode?): Boolean {
  * 所以快指针到末尾时，慢指针刚好到一半的位置。
  * 将慢指针之后的列表颠倒，然后和前半部分对比是否相同即可
  */
-fun isPalindrome4(head: ListNode?): Boolean{
-    if (head?.next == null){
+fun isPalindrome4(head: ListNode?): Boolean {
+    if (head?.next == null) {
         return false
     }
     var slow = head
     var fast = head
-    while (fast?.next!=null){
+    while (fast?.next != null) {
         fast = fast.next?.next
         slow = slow!!.next
     }
     slow = reverseList2(slow)
     var cur = head
-    while (slow!=null){
-        if (cur!!.value == slow.value){
+    while (slow != null) {
+        if (cur!!.value == slow.value) {
             cur = cur.next
             slow = slow.next
-        }else{
+        } else {
             return false
         }
     }
     return true
 }
+
 fun main() {
     println(isPalindrome(createListNode(intArrayOf(1, 2, 2, 1))))
     println(isPalindrome(createListNode(intArrayOf(1, 2, 1, 2, 1))))

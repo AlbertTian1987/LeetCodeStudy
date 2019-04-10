@@ -30,7 +30,7 @@ fun deleteNode(node: ListNode) {
 }
 
 fun main() {
-    val head = createListNode(intArrayOf(4,5,1,9))
+    val head = createListNode(intArrayOf(4, 5, 1, 9))
     deleteNode(head.next!!)
     head.print()
 }

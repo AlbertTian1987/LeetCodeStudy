@@ -49,13 +49,13 @@ fun removeNthFromEnd(head: ListNode, n: Int): ListNode {
 }
 
 fun main() {
-    var head = createListNode(intArrayOf(1,2,3,4,5))
-    head = removeNthFromEnd(head,2)
+    var head = createListNode(intArrayOf(1, 2, 3, 4, 5))
+    head = removeNthFromEnd(head, 2)
     head.print()
-    head = createListNode(intArrayOf(1,2,3,4,5))
-    head = removeNthFromEnd(head,5)
+    head = createListNode(intArrayOf(1, 2, 3, 4, 5))
+    head = removeNthFromEnd(head, 5)
     head.print()
-    head = createListNode(intArrayOf(1,2,3,4,5))
-    head = removeNthFromEnd(head,1)
+    head = createListNode(intArrayOf(1, 2, 3, 4, 5))
+    head = removeNthFromEnd(head, 1)
     head.print()
 }

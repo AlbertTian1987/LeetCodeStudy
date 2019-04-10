@@ -57,7 +57,7 @@ fun hasCycle2(head: ListNode?): Boolean {
     }
     var slow = head.next
     var fast = head.next!!.next
-    while (true){
+    while (true) {
         when {
             fast?.next == null -> return false
             fast == slow -> return true
