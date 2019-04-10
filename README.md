@@ -1,2 +1,2 @@
 # GrayATest
-刷题的代码库
+LeetCode刷题
