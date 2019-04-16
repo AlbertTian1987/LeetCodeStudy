@@ -59,70 +59,118 @@ package com.gray.test.array
  * */
 
 fun isValidSudoku(board: Array<CharArray>): Boolean {
-    //valid all rows
-    for (row in board) {
-        if (!isValidCell(row)) {
-            return false
-        }
-    }
-    //valid all columns
-    for (column in 0 until 9) {
-        val columnData = getColumnData(column, board)
-        if (!isValidCell(columnData)) {
-            return false
-        }
-    }
-    //valid 3*3 cell
-    var row = 0
-    var colum: Int
-    while (row < 9) {
-        colum = 0
-        while (colum < 9) {
-            val cellData = getCellData(row, colum, board)
-            if (!isValidCell(cellData)) {
-                return false
+    val exist = HashSet<Char>()
+    repeat(9) {
+        exist.clear()
+        board[it].forEach { char ->
+            if (char != '.') {
+                if (exist.contains(char)) {
+                    return false
+                } else {
+                    exist.add(char)
+                }
             }
-            colum += 3
         }
-        row += 3
+    }
+    repeat(9) { column ->
+        exist.clear()
+        repeat(9) { row ->
+            val char = board[row][column]
+            if (char != '.') {
+                if (exist.contains(char)) {
+                    return false
+                } else {
+                    exist.add(char)
+                }
+            }
+        }
+    }
+    repeat(9) { block ->
+        exist.clear()
+        val startPos = block / 3 * 27 + block % 3 * 3
+        repeat(9) {
+            val pos = startPos + (it / 3) * 9 + it % 3
+            val char = board[pos / 9][pos % 9]
+            if (char != '.') {
+                if (exist.contains(char)) {
+                    return false
+                } else {
+                    exist.add(char)
+                }
+            }
+        }
     }
     return true
+
 }
 
-fun getCellData(row: Int, colum: Int, board: Array<CharArray>): CharArray {
-    val charArray = CharArray(9)
-    var index = 0
-    for (i in row until row + 3) {
-        charArray[index] = board[i][colum]
-        charArray[index + 1] = board[i][colum + 1]
-        charArray[index + 2] = board[i][colum + 2]
-        index += 3
-    }
-    return charArray
-}
 
-fun getColumnData(colum: Int, board: Array<CharArray>): CharArray {
-    val charArray = CharArray(9)
-    for ((index, row) in board.withIndex()) {
-        charArray[index] = row[colum]
-    }
-    return charArray
-}
-
-fun isValidCell(charArray: CharArray): Boolean {
-    val occurrence = BooleanArray(9) { false }
-    for (c in charArray) {
-        if ('.' == c) {
-            continue
-        }
-        val c1 = c - '1'
-        if (occurrence[c1]) {
-            return false
-        }
-        occurrence[c1] = true
-    }
-    return true
-}
+//
+//fun isValidSudoku(board: Array<CharArray>): Boolean {
+//    //valid all rows
+//    for (row in board) {
+//        if (!isValidCell(row)) {
+//            return false
+//        }
+//    }
+//    //valid all columns
+//    for (column in 0 until 9) {
+//        val columnData = getColumnData(column, board)
+//        if (!isValidCell(columnData)) {
+//            return false
+//        }
+//    }
+//    //valid 3*3 cell
+//    var row = 0
+//    var colum: Int
+//    while (row < 9) {
+//        colum = 0
+//        while (colum < 9) {
+//            val cellData = getCellData(row, colum, board)
+//            if (!isValidCell(cellData)) {
+//                return false
+//            }
+//            colum += 3
+//        }
+//        row += 3
+//    }
+//    return true
+//}
+//
+//fun getCellData(row: Int, colum: Int, board: Array<CharArray>): CharArray {
+//    val charArray = CharArray(9)
+//    var index = 0
+//    for (i in row until row + 3) {
+//        charArray[index] = board[i][colum]
+//        charArray[index + 1] = board[i][colum + 1]
+//        charArray[index + 2] = board[i][colum + 2]
+//        index += 3
+//    }
+//    return charArray
+//}
+//
+//fun getColumnData(colum: Int, board: Array<CharArray>): CharArray {
+//    val charArray = CharArray(9)
+//    for ((index, row) in board.withIndex()) {
+//        charArray[index] = row[colum]
+//    }
+//    return charArray
+//}
+//
+//fun isValidCell(charArray: CharArray): Boolean {
+//    val occurrence = BooleanArray(9) { false }
+//    for (c in charArray) {
+//        if ('.' == c) {
+//            continue
+//        }
+//        val c1 = c - '1'
+//        if (occurrence[c1]) {
+//            return false
+//        }
+//        occurrence[c1] = true
+//    }
+//    return true
+//}
 
 fun main() {
     val list = arrayListOf(
@@ -150,6 +198,7 @@ fun main() {
 
     printBoard(board)
     println(isValidSudoku(board))
+
 }
 
 

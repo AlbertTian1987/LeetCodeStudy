@@ -48,18 +48,16 @@ fun moveZeroes2(nums: IntArray) {
     if (nums.size < 2) {
         return
     }
-
     var left = 0
     var right = 0
-
     while (right < nums.size) {
-        if (nums[right] != 0) {
-            if (left != right) {
-                nums[left] = nums[right].also { nums[right] = nums[left] }
-                left++
-            } else {
+        if (nums[left] == 0) {
+            if (nums[right] != 0) {
+                nums[right] = nums[left].also { nums[left] = nums[right] }
                 left++
             }
+        } else {
+            left++
         }
         right++
     }
