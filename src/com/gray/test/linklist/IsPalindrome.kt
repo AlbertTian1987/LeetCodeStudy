@@ -1,7 +1,5 @@
 package com.gray.test.linklist
 
-import java.util.*
-
 /***
  * 回文链表
  *
@@ -20,43 +18,40 @@ import java.util.*
  *
  */
 
-/**
- * 先遍历一遍，记录总个数，并在遍历中将node放入栈中
- * 再从头遍历，同时弹出栈中元素比较
- * 若相等则是回文
- * 注意最多只需要比较size/2+1次即可
- *
- * 这种方法不好。。。。。。第一次自己的解法真烂
- */
+
 fun isPalindrome(head: ListNode?): Boolean {
-    if (head?.next == null) {
-        return true
+    if (head == null) {
+        return false
     }
-    if (head.next!!.next == null) {
-        return head.value == head.next!!.value
+    var slow = head
+    var fast = head
+    while (fast?.next != null) {
+        fast = fast.next?.next
+        slow = slow!!.next
     }
-    val stack = Stack<Int>()
+    fun reverse(head: ListNode?): ListNode {
+        var pre: ListNode? = null
+        var cur = head
+        while (cur != null) {
+            val next = cur!!.next
+            cur!!.next = pre
+            pre = cur
+            cur = next
+        }
+        return pre!!
+    }
+    slow = reverse(slow)
     var cur = head
-    var size = 0
-    while (cur != null) {
-        stack.push(cur.value)
-        cur = cur.next
-        size++
-    }
-    cur = head
-    var step = size / 2 + 1
-    while (cur != null) {
-        step--
-        if (cur.value == stack.pop()) {
-            cur = cur.next
+    while (slow != null) {
+        if (slow.value == cur!!.value) {
+            slow = slow.next
+            cur = cur!!.next
         } else {
-            break
-        }
-        if (step == 0) {
-            break
+            return false
         }
     }
-    return stack.isEmpty() || step == 0
+
+    return true
 }
 
 /**
@@ -168,6 +163,8 @@ fun isPalindrome4(head: ListNode?): Boolean {
 fun main() {
     println(isPalindrome(createListNode(intArrayOf(1, 2, 2, 1))))
     println(isPalindrome(createListNode(intArrayOf(1, 2, 1, 2, 1))))
+    println(isPalindrome(createListNode(intArrayOf(1, 1, 2, 1))))
+    println(isPalindrome(createListNode(intArrayOf(1, 1))))
     println(isPalindrome(createListNode(intArrayOf(1, 2))))
     println(isPalindrome(createListNode(intArrayOf(1, 0, 0))))
     println("2")

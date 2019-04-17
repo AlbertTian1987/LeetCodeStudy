@@ -15,47 +15,68 @@ package com.gray.test.linklist
  * 进阶：
  *     你能尝试使用一趟扫描实现吗
  * */
-fun removeNthFromEnd(head: ListNode, n: Int): ListNode {
-    var node: ListNode? = head
+fun removeNthFromEnd(head: ListNode, n: Int): ListNode? {
     var count = 1
+    var node = head.next
+    while (node != null) {
+        count++
+        node = node.next
+    }
+    count -= n
+    if (count == 0) {
+        return head.next
+    }
+    var pre = head
+    node = head.next
     while (true) {
-        if (node!!.next != null) {
-            node = node.next!!
-            count++
-        } else {
+        count--
+        if (count == 0) {
+            if (node == null) {
+                pre.next = null
+            } else {
+                pre.next = node.next
+            }
             break
         }
-    }
-    var fromStartN = count - n
-    if (fromStartN == 0) {
-        return head.next!!
-    }
-
-    node = head
-    var preNode = head
-    while (fromStartN > 0) {
-        preNode = node!!
+        pre = node!!
         node = node.next
-        fromStartN--
     }
+    return head
+}
 
-    if (node == null) {
-        preNode.next = null
-    } else {
-        preNode.next = node.next
+/**
+ *  num比n要少计算一次，所以当node移动到底时，delNode刚好移动到要删除的元素之前一个，
+ *  如果delNode=null，说明要删除的是head头元素
+ */
+fun removeNthFromEnd2(head: ListNode, n: Int): ListNode? {
+    var num = 0
+    var delNode: ListNode? = null
+    var node = head
+    while (node.next != null) {
+        node = node.next!!
+        num++
+        if (delNode != null) {
+            delNode = delNode.next
+        } else {
+            if (num == n) {
+                delNode = head
+            }
+        }
     }
-
+    if (delNode == null) {
+        return head.next
+    }
+    delNode.next = delNode.next?.next
     return head
 }
 
 fun main() {
-    var head = createListNode(intArrayOf(1, 2, 3, 4, 5))
-    head = removeNthFromEnd(head, 2)
-    head.print()
+    var head: ListNode = createListNode(intArrayOf(1, 2, 3, 4, 5))
+    removeNthFromEnd2(head, 2).print()
     head = createListNode(intArrayOf(1, 2, 3, 4, 5))
-    head = removeNthFromEnd(head, 5)
-    head.print()
+    removeNthFromEnd2(head, 5).print()
     head = createListNode(intArrayOf(1, 2, 3, 4, 5))
-    head = removeNthFromEnd(head, 1)
-    head.print()
+    removeNthFromEnd2(head, 1).print()
+    head = createListNode(intArrayOf(1))
+    removeNthFromEnd2(head, 1).print()
 }
