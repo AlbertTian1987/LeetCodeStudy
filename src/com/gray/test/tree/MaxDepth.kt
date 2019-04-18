@@ -47,22 +47,14 @@ fun maxDepth2(root: TreeNode?): Int {
     }
     var depth = 0
     val treeList = LinkedList<TreeNode>()
-    val depthList = LinkedList<Int>()
     treeList.addLast(root)
-    depthList.addLast(1)
-    while (!treeList.isEmpty()) {
-        val curDepth = depthList.removeFirst()
-        val curNode = treeList.removeFirst()
-        curNode.left?.let {
-            treeList.addLast(it)
-            depthList.addLast(curDepth + 1)
-        }
-        curNode.right?.let {
-            treeList.addLast(it)
-            depthList.addLast(curDepth + 1)
-        }
-        if (curDepth > depth) {
-            depth = curDepth
+    while (treeList.isNotEmpty()) {
+        depth++
+        val size = treeList.size
+        repeat(size) {
+            val node = treeList.poll()!!
+            node.left?.let { treeList.add(it) }
+            node.right?.let { treeList.add(it) }
         }
     }
     return depth
