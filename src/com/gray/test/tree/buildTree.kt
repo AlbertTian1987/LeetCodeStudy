@@ -52,23 +52,22 @@ fun buildTree(preorder: IntArray, inorder: IntArray): TreeNode? {
  * @return
  */
 fun build(preorder: IntArray, inorder: IntArray, preSt: Int, inSt: Int, inEnd: Int): TreeNode? {
-
     if (preSt > preorder.size - 1 || inSt > inEnd) {
         return null
     }
     val root = TreeNode(preorder[preSt])
-    //根节点在中序遍历中的index
     var rootIndex = inSt
-    while (rootIndex <= inEnd && root.`val` != inorder[rootIndex]) {
-        rootIndex++
+    for (i in inSt..inEnd) {
+        while (inorder[i] == root.`val`) {
+            rootIndex = i
+            break
+        }
     }
-    //左子树的长度
-    val leftLength = rootIndex - inSt
-    //右子树在先序遍历的起始点
-    val rightSt = preSt + leftLength + 1
+    val leftTreeLength = rootIndex - inSt
+    val rigthSt = preSt + leftTreeLength + 1
     val leftSt = preSt + 1
     root.left = build(preorder, inorder, leftSt, inSt, rootIndex - 1)
-    root.right = build(preorder, inorder, rightSt, rootIndex + 1, inEnd)
+    root.right = build(preorder, inorder, rigthSt, rootIndex + 1, inEnd)
     return root
 }
 
