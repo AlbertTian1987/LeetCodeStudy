@@ -18,21 +18,22 @@ package com.gray.test.backTracking
 import java.util.*
 
 fun generateParenthesis(n: Int): List<String> {
-    fun help(ans: String, leftP: Int, rightP: Int, n: Int, list: ArrayList<String>) {
-        if (leftP == 0 && rightP == 0) {
+    val list = ArrayList<String>()
+    fun help(ans: String, leftP: Int, rightP: Int) {
+        if (leftP == n && rightP == n) {
             list.add(ans)
             return
         }
-        if (leftP > 0) {
-            help("$ans(", leftP - 1, rightP, n, list)
+        if (leftP < n) {
+            help("$ans(", leftP + 1, rightP)
         }
-        if (leftP < rightP) {
-            help("$ans)", leftP, rightP - 1, n, list)
+        if (leftP > rightP) {
+            help("$ans)", leftP, rightP + 1)
         }
     }
 
-    val list = ArrayList<String>()
-    help("", n, n, n, list)
+
+    help("", 0, 0)
     return list
 }
 
