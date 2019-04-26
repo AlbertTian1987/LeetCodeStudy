@@ -50,16 +50,16 @@ fun permute2(nums: IntArray): List<List<Int>> {
     val path = IntArray(n)
     val result = ArrayList<List<Int>>(n * (n - 1))
 
-    fun dfs(nums: IntArray, index: Int) {
-        if (index == nums.size) {
+    fun dfs(nums: IntArray, step: Int) {
+        if (step == nums.size) {
             result.add(path.toList())
             return
         }
         for (i in 0 until nums.size) {
             if (unvisited[i]) {
-                path[index] = nums[i]
+                path[step] = nums[i]
                 unvisited[i] = false
-                dfs(nums, index + 1)
+                dfs(nums, step + 1)
                 unvisited[i] = true
             }
         }

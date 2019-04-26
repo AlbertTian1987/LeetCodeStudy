@@ -22,7 +22,6 @@ package com.gray.test.backTracking
  *          []
  *      ]
  * */
-import java.util.*
 
 fun subsets(nums: IntArray): List<List<Int>> {
     val result = ArrayList<ArrayList<Int>>()
@@ -58,19 +57,40 @@ fun subsets(nums: IntArray): List<List<Int>> {
 fun subsets2(nums: IntArray): List<List<Int>> {
     val result = ArrayList<ArrayList<Int>>()
     result.add(arrayListOf())
-    var start: Int
-    var bound: Int
-    nums.forEach {
-        bound = result.size - 1
-        start = 0
-        while (start <= bound) {
+    nums.forEach { num ->
+        repeat(result.size) {
             result.add(ArrayList<Int>().apply {
-                this.addAll(result[start])
-                this.add(it)
+                this.addAll(result[it])
+                this.add(num)
             })
-            start++
         }
     }
+    return result
+}
+
+fun subsets3(nums: IntArray): List<List<Int>> {
+    val vis = BooleanArray(nums.size + 1)
+
+    fun dfs(step: Int, result: ArrayList<List<Int>>) {
+        if (step == nums.size) {
+            val list = ArrayList<Int>()
+            for (i in 1..step) {
+                if (vis[i]) {
+                    list.add(nums[i - 1])
+                }
+            }
+            result.add(list)
+        } else {
+            vis[step + 1] = true
+            dfs(step + 1, result)
+            vis[step + 1] = false
+            dfs(step + 1, result)
+        }
+
+    }
+
+    val result = ArrayList<List<Int>>()
+    dfs(0, result)
     return result
 }
 
@@ -86,4 +106,11 @@ fun main() {
     println(subsets2(intArrayOf(1, 2)))
     println(subsets2(intArrayOf(1, 2, 3)))
     println(subsets2(intArrayOf(1, 2, 3, 4)))
+
+    println()
+    println(subsets3(intArrayOf()))
+    println(subsets3(intArrayOf(1)))
+    println(subsets3(intArrayOf(1, 2)))
+    println(subsets3(intArrayOf(1, 2, 3)))
+    println(subsets3(intArrayOf(1, 2, 3, 4)))
 }
