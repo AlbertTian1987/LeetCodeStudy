@@ -19,43 +19,29 @@ package com.gray.test.backTracking
  * 说明:
  *  尽管上面的答案是按字典序排列的，但是你可以任意选择答案输出的顺序。
  */
-import java.util.*
 
-fun getDigitSet(digit: Char): List<String> {
-    return when (digit) {
-        '2' -> "abc".toCharArray()
-        '3' -> "def".toCharArray()
-        '4' -> "ghi".toCharArray()
-        '5' -> "jkl".toCharArray()
-        '6' -> "mno".toCharArray()
-        '7' -> "pqrs".toCharArray()
-        '8' -> "tuv".toCharArray()
-        else -> "wxyz".toCharArray()
-    }.map { it.toString() }
-}
-
-fun genMixedSet(a: List<String>, b: List<String>): List<String> {
-    if (a.isEmpty()) {
-        return b
-    }
-    val result = ArrayList<String>(a.size * b.size)
-    a.forEach { aStr ->
-        b.forEach { bStr ->
-            result.add("$aStr$bStr")
+fun letterCombinations(digits: String): List<String> {
+    val map = arrayOf("abc", "def", "ghi", "jkl", "mno", "pqrs", "tuv", "wxyz")
+    val path = CharArray(digits.length)
+    val result = ArrayList<String>()
+    fun dfs(step: Int) {
+        if (step == digits.length) {
+            if (path.isNotEmpty()) {
+                result.add(path.joinToString(separator = "") { it.toString() })
+            }
+            return
+        }
+        val str = map[digits[step] - '2']
+        for (i in 0 until str.length) {
+            path[step] = str[i]
+            dfs(step + 1)
         }
     }
+    dfs(0)
     return result
 }
 
-fun letterCombinations(digits: String): List<String> {
-    var preSet = List(0) { "" }
-    for (digit in digits) {
-        val set = getDigitSet(digit)
-        preSet = genMixedSet(preSet, set)
-    }
-    return preSet
-}
-
 fun main() {
-    println(letterCombinations("2"))
+    println(letterCombinations("233"))
+    println(letterCombinations(""))
 }
