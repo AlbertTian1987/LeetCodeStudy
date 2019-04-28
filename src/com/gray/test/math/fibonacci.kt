@@ -29,6 +29,16 @@ fun fibonacci1(n: Int): Int {
     return i
 }
 
+/**
+ * 尾递归
+ */
+tailrec fun fibonacci(a: Int, b: Int, i: Int, n: Int): Int {
+    if (i >= n) {
+        return a
+    }
+    return fibonacci(b, a + b, i + 1, n)
+}
+
 
 /**
  * 关于斐波拉契的一个规律
@@ -81,4 +91,5 @@ fun fibonacci2(n: Int): Int {
 fun main() {
     println(fibonacci1(186))
     println(fibonacci2(186))
+    println(fibonacci(0, 1, 0, 186))
 }
