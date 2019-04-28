@@ -1,6 +1,7 @@
 package com.gray.test.sortAndSearch
 
 import java.util.*
+import kotlin.math.min
 
 /**
  * 归并排序
@@ -44,13 +45,34 @@ fun mergeSorted(array: IntArray, l: Int, mid: Int, r: Int, temp: IntArray) {
             temp[k++] = array[j++]
         }
     }
-    for (index in l..r) {
-        array[index] = temp[index - l]
+    System.arraycopy(temp, 0, array, l, r - l + 1)
+}
+
+/**
+ * 使用迭代实现
+ */
+fun mergeSort2(array: IntArray) {
+    val temp = IntArray(array.size)
+    val size = array.size
+    var step = 1
+    while (step <= size) {
+        val offset = step + step
+        for (index in 0 until size step offset) {
+            val lo = index
+            val mid = min(index + step - 1, size - 1)
+            val hi = min(index + offset - 1, size - 1)
+            mergeSorted(array, lo, mid, hi, temp)
+        }
+        step = step shl 1
     }
 }
 
 fun main() {
-    val array = intArrayOf(3, 2, 1, 7, 8, 0, 11, 3, 5, 9, 2, 19, 99, 8, 37, 5)
+    val array = intArrayOf(3, 2, 1, 7, 8, 0, 11, 3, 5, 9, 2, 19, 99, 8, 37, 5, 9)
     mergeSort(array)
     println(Arrays.toString(array))
+
+    val array2 = intArrayOf(3, 2, 1, 7, 8, 0, 11, 3, 5, 9, 2, 19, 99, 8, 37, 5, 9)
+    mergeSort2(array2)
+    println(Arrays.toString(array2))
 }
