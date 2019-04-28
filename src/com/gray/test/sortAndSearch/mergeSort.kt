@@ -9,6 +9,8 @@ import kotlin.math.min
  * 1. 将数组分半
  * 2. 得到两个排好序的数组
  * 3. 将两个排好序的数组合并起来
+ *
+ * O(nlogn)
  * */
 
 fun mergeSort(array: IntArray) {
