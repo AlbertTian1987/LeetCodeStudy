@@ -17,6 +17,8 @@ import java.util.*
  * T(n) maxHeapify(array,0,j) = lgn
  *
  * 所以堆排序 T(n) = O(n) + n*(C+lgn) = O(nlgn)
+ *
+ * 每次将array[0]和队尾交换，然后将队尾剔除堆，再对array[0]做maxHeapify，就可以得到一个递增数组
  * */
 
 fun heapSort(array: IntArray) {
