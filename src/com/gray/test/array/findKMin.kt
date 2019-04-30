@@ -21,11 +21,9 @@ fun getPivot(array: IntArray): Int {
         val end = min(start + subArraySize, array.size)
         val temp = IntArray(end - start)
         System.arraycopy(array, start, temp, 0, temp.size)
-        temp.sort()
-        mediansArray[i] = temp[temp.size / 2]
+        mediansArray[i] = getKMin(temp, temp.size / 2)
     }
-    mediansArray.sort()
-    return mediansArray[mediansSize / 2]
+    return getKMin(mediansArray, mediansSize / 2)
 }
 
 fun splitArrayByPivot(array: IntArray, pivot: Int, lt: ArrayList<Int>, eq: ArrayList<Int>, gt: ArrayList<Int>) {
@@ -39,6 +37,10 @@ fun splitArrayByPivot(array: IntArray, pivot: Int, lt: ArrayList<Int>, eq: Array
 }
 
 tailrec fun getKMin(intArray: IntArray, k: Int): Int {
+    if (intArray.size <= 10) {
+        intArray.sort()
+        return intArray[k]
+    }
     val pivot = getPivot(intArray)
     val lt = ArrayList<Int>()
     val eq = ArrayList<Int>()
