@@ -1,5 +1,7 @@
 package com.gray.test.math
 
+import kotlin.system.measureNanoTime
+
 
 /**
  * Fibonacci
@@ -56,40 +58,43 @@ tailrec fun fibonacci(a: Int, b: Int, i: Int, n: Int): Int {
  * 可证
  */
 
-fun fibonacci2(n: Int): Int {
-    if (n == 0) {
-        return 0
-    }
-
-    fun times(m1: IntArray, m2: IntArray): IntArray {
-        val n0 = m1[0] * m2[0] + m1[1] * m2[2]
-        val n1 = m1[0] * m2[1] + m1[1] * m2[3]
-        val n2 = m1[2] * m2[0] + m1[3] * m2[2]
-        val n3 = m1[2] * m2[1] + m1[3] * m2[3]
-        return intArrayOf(n0, n1, n2, n3)
-    }
-
-    fun help(matrix: IntArray, n: Int): IntArray {
-        if (n == 1) {
-            return matrix
+fun fibonacci2(pow: Int): Int {
+    val temp = Array(2) { IntArray(2) }
+    //二阶矩阵乘法
+    fun matrixPow(a: Array<IntArray>, b: Array<IntArray>) {
+        for (i in 0..1) {
+            for (j in 0..1) {
+                temp[i][j] = 0
+                for (k in 0..1) {
+                    temp[i][j] += a[i][k] * b[k][j]
+                }
+            }
         }
-        return if (n and 1 == 0) {
-            val p = n / 2
-            val m = help(matrix, p)
-            times(m, m)
-        } else {
-            val p = (n - 1) / 2
-            val m = help(matrix, p)
-            times(times(m, m), matrix)
+        for (i in 0..1) {
+            for (j in 0..1) {
+                a[i][j] = temp[i][j]
+            }
         }
     }
 
-    val m = help(intArrayOf(1, 1, 1, 0), n)
-    return m[1]
+    var n = pow
+    val base = arrayOf(intArrayOf(1, 1), intArrayOf(1, 0))
+
+    //单位矩阵
+    val res = arrayOf(intArrayOf(1, 0), intArrayOf(0, 1))
+    while (n > 0) {
+        if (n and 1 != 0) {
+            matrixPow(res, base)
+        }
+        matrixPow(base, base)
+        n /= 2
+    }
+
+    return res[0][1]
 }
 
 fun main() {
-    println(fibonacci1(186))
-    println(fibonacci2(186))
-    println(fibonacci(0, 1, 0, 186))
+    println(measureNanoTime { fibonacci1(6) })
+    println(fibonacci2(6))
+    println(fibonacci(0, 1, 0, 9898))
 }
