@@ -14,12 +14,8 @@ package com.gray.test.dynamicPlan
  *   k循环里的每个子组合也都是之前计算过的。k循环里，发现有更小的结果，记录更小的结果
  *
  * */
-//[i,j]=value 从i*i+1..*j的最小操作次数
-private val m = TwoKeyMap()
-//[i,j]=k,i到j之间划分在k，即(i*..k)*(K+1*..j)
-private val s = TwoKeyMap()
 
-private class TwoKeyMap {
+class TwoKeyMap {
     private val data = hashMapOf<Pair<Int, Int>, Int>()
     operator fun get(i: Int, j: Int): Int {
         val key = Pair(i, j)
@@ -36,6 +32,10 @@ private class TwoKeyMap {
 }
 
 fun matrixChain(p: IntArray, n: Int): Int {
+    //[i,j]=value 从i*i+1..*j的最小操作次数
+    val m = TwoKeyMap()
+    //[i,j]=k,i到j之间划分在k，即(i*..k)*(K+1*..j)
+    val s = TwoKeyMap()
     for (r in 2..n) {
         for (i in 1..n - r + 1) {
             val j = i + r - 1
@@ -50,11 +50,11 @@ fun matrixChain(p: IntArray, n: Int): Int {
             }
         }
     }
-    println(getSpitStr(1, n))
+    println(getSpitStr(1, n, s))
     return m[1, n]
 }
 
-fun getSpitStr(i: Int, j: Int): String {
+fun getSpitStr(i: Int, j: Int, s: TwoKeyMap): String {
     if (j - i == 1) {
         return "(A${i}A$j)"
     } else if (j == i) {
@@ -62,19 +62,12 @@ fun getSpitStr(i: Int, j: Int): String {
     }
 
     val k = s[i, j]
-    val str1 = getSpitStr(i, k)
-    val str = getSpitStr(k + 1, j)
-    return "($str1$str)"
+    return "(${getSpitStr(i, k, s)}${getSpitStr(k + 1, j, s)})"
 }
 
 fun main() {
     var p = intArrayOf(30, 35, 15, 5, 10, 20)
     println(matrixChain(p, p.size - 1))
-
-    m.clear()
-    s.clear()
-
     p = intArrayOf(100, 20, 89, 6, 56, 34, 10, 29, 33, 76, 53)
     println(matrixChain(p, p.size - 1))
-
 }
