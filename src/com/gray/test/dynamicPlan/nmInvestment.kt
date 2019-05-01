@@ -27,6 +27,7 @@ fun nmInvestment(table: Array<IntArray>, m: Int): Int {
     //  F[1,2] = 前1个项目总投资2万最大收益
     //  F[2,1] = 前2个项目总投资1万最大收益
     val F = TwoKeyMap()
+    // mark[k, x] = p 投资k项投资x元时，将p元投资到第k项上
     val mark = TwoKeyMap()
 
     for (i in 1..m) {//初始化，只投资第一个项目时，各种收益
