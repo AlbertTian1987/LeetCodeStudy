@@ -29,6 +29,10 @@ private class TwoKeyMap {
     operator fun set(i: Int, j: Int, value: Int) {
         data[Pair(i, j)] = value
     }
+
+    fun clear() {
+        data.clear()
+    }
 }
 
 fun matrixChain(p: IntArray, n: Int): Int {
@@ -46,26 +50,31 @@ fun matrixChain(p: IntArray, n: Int): Int {
             }
         }
     }
+    println(getSpitStr(1, n))
     return m[1, n]
 }
 
-fun print(i: Int, j: Int) {
+fun getSpitStr(i: Int, j: Int): String {
+    if (j - i == 1) {
+        return "(A${i}A$j)"
+    } else if (j == i) {
+        return "A$i"
+    }
+
     val k = s[i, j]
-    if (k > i) {
-        print(i, k)
-    } else {
-        println("$i..$k")
-    }
-    if (k + 1 < j - 1) {
-        print(k + 1, j)
-    } else {
-        println("${k + 1}..$j")
-    }
+    val str1 = getSpitStr(i, k)
+    val str = getSpitStr(k + 1, j)
+    return "($str1$str)"
 }
 
 fun main() {
-    val p = intArrayOf(100, 50, 60, 42, 9, 10, 5, 100, 34)
-    val n = p.size - 1
-    println(matrixChain(p, n))
-    print(1, n)
+    var p = intArrayOf(30, 35, 15, 5, 10, 20)
+    println(matrixChain(p, p.size - 1))
+
+    m.clear()
+    s.clear()
+
+    p = intArrayOf(100, 20, 89, 6, 56, 34, 10, 29, 33, 76, 53)
+    println(matrixChain(p, p.size - 1))
+
 }
