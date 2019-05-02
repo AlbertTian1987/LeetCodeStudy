@@ -3,6 +3,8 @@ package com.gray.test.dynamicPlan
 import java.util.*
 import kotlin.math.log
 import kotlin.math.max
+import kotlin.math.min
+import kotlin.random.Random
 
 /**
  * 黑白图像压缩
@@ -43,7 +45,7 @@ fun compress(P: IntArray): Int {
         //先考虑末尾只留一个的情况
         S[i] = S[i - 1] + 1 * b(P, i - 1, i - 1) + 11
         L[i] = 1
-        for (j in 2..i) {
+        for (j in 2..min(i, 256)) {
             //j是末尾预留的长度
             val t = S[i - j] + j * b(P, i - j, i - 1) + 11
             if (t < S[i]) {
@@ -67,5 +69,6 @@ fun compress(P: IntArray): Int {
 }
 
 fun main() {
-    println(compress(intArrayOf(10, 12, 15, 255, 1, 2, 1, 1, 2, 2, 1, 1)))
+    val P = IntArray(10000) { Random.nextInt(256) }
+    println(compress(P))
 }
