@@ -1,6 +1,7 @@
 package com.gray.test.dynamicPlan
 
 import java.util.*
+import kotlin.collections.ArrayList
 
 /**
  * 序列比对
@@ -18,13 +19,16 @@ import java.util.*
  *  C[i,0] = i,即S1还有元素没转换完，但S2已经没有需要转换的元素了，那么S1只有操作i步，每步都是删除S1的当前尾元素
  *  C[0,j] = j,即S1元素都已经转换完，但S2还有j个元素需要转换，那剩下的只有j步，每步把S2的元素拷贝过来一个
  *
- * 1.S1删除S1[ i],规约成 现在是 C[i-1,j]+1
- * 2.S1末尾补上S2[ j],规约成 现在是 C[i,j-1]+1
+ * 1.S1删除S1[ i],规约成 现在是 C[i,j] = ]C[i-1,j] + 1
+ * 2.S1末尾补上S2[ j],规约成 现在是 C[i,j] = C[i,j-1]+1
+ * 3 S1和S2末尾交换 C[i,j] = C[i-1,j-1]+1
+ * 4 S1和S2末尾相等 C[i,j] = C[i-1,j-1]
  *
+ * C[i,j]是1-4中最小值
  * */
 
 fun convertSeq(s1: String, s2: String): Int {
-    //操作次数
+    //最优操作次数
     val C = TwoKeyMap()
     //操作步骤
     //1 s1删除最后一个字符
@@ -83,22 +87,40 @@ fun convertSeq(s1: String, s2: String): Int {
             j--
         }
     }
-    val count = C[s1.length, s2.length]
-    print("一共${count}步操作：")
-    while (acts.isNotEmpty()) {
-        when (acts.pop()!!) {
-            1 -> print("删掉")
-            2 -> print("插入")
-            3 -> print("替换")
-            4 -> print("跳过")
-        }
-        if (acts.isNotEmpty()) {
-            print("->")
-        } else {
-            println()
+    j = 0
+    i = 0
+    val convertStr = ArrayList<Char>(s1.toCharArray().asList())
+    val actions = LinkedList<String>()
+    actions.add(convertStr.toString())
+    while (j < s2.length) {
+        when (acts.pop()) {
+            1 -> {
+                val c = convertStr.removeAt(i)
+                actions.add("删除第${i}个元素$c->$convertStr")
+            }
+            2 -> {
+                convertStr.add(s2[j])
+                actions.add("末尾加上${s2[j]}->$convertStr")
+                j++
+            }
+            3 -> {
+                convertStr[i] = s2[j]
+                actions.add("将第${i}个元素替换为${s2[j]}->$convertStr")
+                i++
+                j++
+            }
+            4 -> {
+                i++
+                j++
+            }
         }
     }
-    return count
+
+    while (actions.isNotEmpty()) {
+        println(actions.poll())
+    }
+    println()
+    return C[s1.length, s2.length]
 }
 
 fun main() {
