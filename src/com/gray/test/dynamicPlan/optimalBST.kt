@@ -98,4 +98,8 @@ fun main() {
     //值是 1,2,3,4,5
     val tree = genTree(intArrayOf(1, 2, 3, 4, 5), k, 0, 4)
     println(tree.`val`)
+
+    val k2 = optimalBST(floatArrayOf(0.15f, 0.10f, 0.05f, 0.10f, 0.20f), floatArrayOf(0.05f, 0.10f, 0.05f, 0.05f, 0.05f, 0.10f))
+    val tree2 = genTree(intArrayOf(1, 2, 3, 4, 5), k2, 0, 4)
+    println(tree2.`val`)
 }
