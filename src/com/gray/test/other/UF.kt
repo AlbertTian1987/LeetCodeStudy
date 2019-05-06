@@ -5,6 +5,9 @@ package com.gray.test.other
  * 并查集(Union-Find)
  * https://blog.csdn.net/dm_vincent/article/details/7655764
  *
+ * 并查集是为了解决这一类问题：给出两个节点，判断它们是否连通，如果连通，不需要给出具体的路径
+ * 如果需要给出具体路径，那基于DFS的算法
+ *
  * 一、怎么分组，以及高效Find？
  * 1. 开始默认一个数据一个组，id[ i] = i (i>=0 && i<N)
  * 2. 开始合并以后，以一个树的形式来组织同在一个组的数据 只有 id[ root] = root ，其他的可以不断通过这种方式来查询到自己所在的组的root
@@ -20,7 +23,7 @@ class UF(N: Int) {
 
     private val id = IntArray(N)
     private val size = IntArray(N) { 1 }
-    private var count = 0
+    private var count = N
 
     init {
         repeat(N) {
