@@ -1,75 +1,88 @@
 package com.gray.test.graph
 
 import java.util.*
+import kotlin.collections.ArrayList
 
-class Graph(private val vertices: Int) {
+data class Edge(val begin: Int, val end: Int, val weight: Int)
 
-    private val adj: Array<CharArray> = Array(vertices) {
-        CharArray(vertices) { '0' }
-    }
+class Graph(val vertexCount: Int, private val direct: Boolean = false) {
 
-    private var edges: Int = 0
-    private val marked = BooleanArray(vertices)
+    val adjacentEdges = HashMap<Int, ArrayList<Edge>>()
 
-    fun addEdge(v: Int, w: Int) {
-        adj[v][w] = '1'
-        adj[w][v] = '1'
-        edges++
-    }
-
-    fun showGraph() {
-        for (i in 0 until adj.size) {
-            print("$i ->")
-            for (j in 0 until adj.size) {
-                if (adj[i][j] == '1') {
-                    print("$j ")
-                }
-            }
-            println()
+    init {
+        repeat(vertexCount) {
+            adjacentEdges[it] = ArrayList(vertexCount)
         }
     }
 
-    fun reset() {
-        marked.fill(false)
+    private val visited = BooleanArray(vertexCount)
+
+    var edge: Int = 0
+        private set(value) {
+            field = value
+        }
+
+    fun addEdge(u: Int, v: Int) {
+        addEdge(u, v, 0)
+    }
+
+    fun addEdge(u: Int, v: Int, w: Int) {
+        _addEdge(u, v, w)
+        if (!direct) {
+            //无向图增加一条相对应的边
+            _addEdge(v, u, w)
+        }
+        edge++
+    }
+
+    private fun _addEdge(u: Int, v: Int, w: Int) {
+        val edges = adjacentEdges[u]!!
+        edges.add(Edge(u, v, w))
+    }
+
+    fun resetSearchMark() {
+        visited.fill(false)
     }
 
     fun dfs(v: Int) {
-        if (!marked[v]) {
-            marked[v] = true
+        if (!visited[v]) {
+            visited[v] = true
             println("Visited vertex: $v")
         }
-        for ((vertex, flag) in adj[v].withIndex()) {
-            if (!marked[vertex] && flag == '1') {
-                dfs(vertex)
+        for (edge in adjacentEdges[v]!!) {
+            if (!visited[edge.end]) {
+                dfs(edge.end)
             }
         }
     }
 
-    fun bfs(v: Int) {
+    fun bsf(v: Int) {
         val queue = LinkedList<Int>()
-        if (!marked[v]) {
-            marked[v] = true
-            println("Visited vertex: $v")
-        }
         queue.add(v)
-        while (queue.isNotEmpty() || marked.any { !it }) {
+        while (queue.isNotEmpty()) {
             val size = queue.size
             repeat(size) {
-                val vv: Int =
-                        if (queue.isEmpty()) {
-                            marked.indexOfFirst { !it }
-                        } else {
-                            queue.poll()!!
-                        }
-                for ((vertex, flag) in adj[vv].withIndex()) {
-                    if (!marked[vertex] && flag == '1') {
-                        marked[vertex] = true
-                        println("Visited vertex: $vertex")
-                        queue.add(vertex)
+                val i = queue.poll()!!
+                if (!visited[i]) {
+                    visited[i] = true
+                    println("Visited vertex: $i")
+                }
+                val edges = adjacentEdges[i]!!
+                for (edge in edges) {
+                    if (!visited[edge.end]) {
+                        queue.add(edge.end)
                     }
                 }
             }
         }
+    }
+
+    fun getAllEdges(): ArrayList<Edge> {
+        val ret = ArrayList<Edge>()
+        for (edge in adjacentEdges.values) {
+            ret.addAll(edge)
+        }
+        return ret
     }
 }
 
@@ -79,9 +92,8 @@ fun main() {
     g.addEdge(0, 2)
     g.addEdge(1, 3)
     g.addEdge(2, 4)
-    g.showGraph()
     g.dfs(0)
-    g.reset()
+    g.resetSearchMark()
     println()
-    g.bfs(0)
+    g.bsf(0)
 }

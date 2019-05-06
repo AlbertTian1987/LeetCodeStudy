@@ -10,7 +10,7 @@ import java.util.*
  *
  * 算法时间复杂度O(n^2)
  */
-fun prim(vertexCount: Int, adjacentEdges: HashMap<Int, Array<Edge>>) {
+fun prim(vertexCount: Int, adjacentEdges: HashMap<Int, ArrayList<Edge>>) {
     val visited = BooleanArray(vertexCount)
     visited[0] = true
     repeat(vertexCount - 1) {
@@ -36,15 +36,16 @@ fun prim(vertexCount: Int, adjacentEdges: HashMap<Int, Array<Edge>>) {
 }
 
 fun main() {
-    val adjacentEdges = HashMap<Int, Array<Edge>>()
-    adjacentEdges[0] = arrayOf(Edge(0, 1, 6), Edge(0, 2, 1), Edge(0, 3, 5))
-    adjacentEdges[1] = arrayOf(Edge(1, 0, 6), Edge(1, 2, 5), Edge(1, 4, 3))
-    adjacentEdges[2] = arrayOf(
-            Edge(2, 0, 1), Edge(2, 1, 5), Edge(2, 3, 5),
-            Edge(2, 4, 6), Edge(2, 5, 4)
-    )
-    adjacentEdges[3] = arrayOf(Edge(3, 0, 5), Edge(3, 2, 5), Edge(3, 5, 2))
-    adjacentEdges[4] = arrayOf(Edge(4, 1, 3), Edge(4, 2, 6), Edge(4, 5, 6))
-    adjacentEdges[5] = arrayOf(Edge(5, 2, 4), Edge(5, 3, 2), Edge(5, 4, 6))
-    prim(6, adjacentEdges)
+    val graph = Graph(6)
+    graph.addEdge(0, 1, 6)
+    graph.addEdge(0, 2, 1)
+    graph.addEdge(0, 3, 5)
+    graph.addEdge(1, 2, 5)
+    graph.addEdge(1, 4, 3)
+    graph.addEdge(2, 3, 5)
+    graph.addEdge(2, 4, 6)
+    graph.addEdge(2, 5, 4)
+    graph.addEdge(3, 5, 2)
+    graph.addEdge(4, 5, 6)
+    prim(graph.vertexCount, graph.adjacentEdges)
 }
