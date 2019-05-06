@@ -12,7 +12,7 @@ import java.util.*
  * 4. 重复2、3步直到S集合和V集合相等
  * */
 
-fun dijkstra(origin: Int, vertexCount: Int, adjacentEdges: HashMap<Int, Array<ThreeData>>) {
+fun dijkstra(origin: Int, vertexCount: Int, adjacentEdges: HashMap<Int, Array<Edge>>) {
     val sptSet = BooleanArray(vertexCount) { false }
     val dist = IntArray(vertexCount) { Int.MAX_VALUE }
     dist[origin] = 0
@@ -22,10 +22,10 @@ fun dijkstra(origin: Int, vertexCount: Int, adjacentEdges: HashMap<Int, Array<Th
         for (v in 0 until vertexCount) {
             val edges = adjacentEdges[u] ?: continue
             if (!sptSet[v] && dist[u] != Int.MAX_VALUE) {//u不在集合S里，且U目前是可达的
-                val d = edges.firstOrNull { it.v2 == v }//从u能够达到v吗？
+                val d = edges.firstOrNull { it.end == v }//从u能够达到v吗？
                 d?.let {
-                    if (it.w + dist[u] < dist[v]) {//源点到u的距离+u到v的距离，就是源点到v的距离
-                        dist[v] = it.w + dist[u]
+                    if (it.weight + dist[u] < dist[v]) {//源点到u的距离+u到v的距离，就是源点到v的距离
+                        dist[v] = it.weight + dist[u]
                     }
                 }
             }
@@ -50,10 +50,10 @@ fun findMinDistance(vertexCount: Int, sptSet: BooleanArray, dist: IntArray): Int
 }
 
 fun main() {
-    val adjacentEdges = hashMapOf<Int, Array<ThreeData>>()
-    adjacentEdges[0] = arrayOf(ThreeData(0, 1, 10), ThreeData(0, 5, 3))
-    adjacentEdges[1] = arrayOf(ThreeData(1, 2, 7), ThreeData(1, 3, 5))
-    adjacentEdges[3] = arrayOf(ThreeData(3, 2, 4), ThreeData(3, 4, 7))
-    adjacentEdges[5] = arrayOf(ThreeData(5, 1, 2), ThreeData(5, 3, 6), ThreeData(5, 4, 1))
+    val adjacentEdges = hashMapOf<Int, Array<Edge>>()
+    adjacentEdges[0] = arrayOf(Edge(0, 1, 10), Edge(0, 5, 3))
+    adjacentEdges[1] = arrayOf(Edge(1, 2, 7), Edge(1, 3, 5))
+    adjacentEdges[3] = arrayOf(Edge(3, 2, 4), Edge(3, 4, 7))
+    adjacentEdges[5] = arrayOf(Edge(5, 1, 2), Edge(5, 3, 6), Edge(5, 4, 1))
     dijkstra(0, 6, adjacentEdges)
 }
