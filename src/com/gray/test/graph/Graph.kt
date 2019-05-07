@@ -1,7 +1,7 @@
 package com.gray.test.graph
 
+import com.gray.test.other.UF
 import java.util.*
-import kotlin.collections.ArrayList
 
 data class Edge(val begin: Int, val end: Int, val weight: Int)
 
@@ -40,23 +40,41 @@ class Graph(val vertexCount: Int, private val direct: Boolean = false) {
         edges.add(Edge(u, v, w))
     }
 
-    fun resetSearchMark() {
+    private fun resetSearchMark() {
         visited.fill(false)
     }
 
-    fun dfs(v: Int) {
-        if (!visited[v]) {
-            visited[v] = true
-            println("Visited vertex: $v")
-        }
-        for (edge in adjacentEdges[v]!!) {
-            if (!visited[edge.end]) {
-                dfs(edge.end)
+    fun dfs() {
+        resetSearchMark()
+        for (v in 0 until vertexCount) {
+            if (!visited[v]) {
+                innerDfs(v)
             }
         }
     }
 
-    fun bsf(v: Int) {
+    private fun innerDfs(v: Int) {
+        if (!visited[v]) {
+            visited[v] = true
+            println("Visited vertex: ${v + 1}")
+        }
+        for (edge in adjacentEdges[v]!!) {
+            if (!visited[edge.end]) {
+                innerDfs(edge.end)
+            }
+        }
+    }
+
+    fun bsf() {
+        resetSearchMark()
+        for (v in 0 until vertexCount) {
+            if (!visited[v]) {
+                innerBsf(v)
+            }
+        }
+    }
+
+    private fun innerBsf(v: Int) {
         val queue = LinkedList<Int>()
         queue.add(v)
         while (queue.isNotEmpty()) {
@@ -65,7 +83,7 @@ class Graph(val vertexCount: Int, private val direct: Boolean = false) {
                 val i = queue.poll()!!
                 if (!visited[i]) {
                     visited[i] = true
-                    println("Visited vertex: $i")
+                    println("Visited vertex: ${i + 1}")
                 }
                 val edges = adjacentEdges[i]!!
                 for (edge in edges) {
@@ -84,6 +102,26 @@ class Graph(val vertexCount: Int, private val direct: Boolean = false) {
         }
         return ret
     }
+
+    fun getEdgesUF(): UF {
+        val uf = UF(vertexCount)
+        adjacentEdges.values.asSequence().flatMap { it.asSequence() }
+                .forEach { uf.union(it.begin, it.end) }
+        return uf
+    }
+
+    fun createInverseGraph(): Graph {
+        val g = Graph(vertexCount)
+        for (u in 0 until vertexCount - 1) {
+            val edges = adjacentEdges[u]!!
+            for (v in u + 1 until vertexCount) {
+                if (edges.filter { it.end == v }.count() == 0) {
+                    g.addEdge(u, v, 0)
+                }
+            }
+        }
+        return g
+    }
 }
 
 fun main() {
@@ -92,8 +130,7 @@ fun main() {
     g.addEdge(0, 2)
     g.addEdge(1, 3)
     g.addEdge(2, 4)
-    g.dfs(0)
-    g.resetSearchMark()
+    g.dfs()
     println()
-    g.bsf(0)
+    g.bsf()
 }
