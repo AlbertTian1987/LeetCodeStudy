@@ -19,7 +19,6 @@ fun bags2(values: IntArray, weights: IntArray, maxWeight: Int) {
             println("${Arrays.toString(nums)}, profit is $profit, total weight is ${maxWeight - leftWeight}")
             return
         }
-        println("dfs $step $profit $leftWeight")
         if (leftWeight == 0) {
             for (i in step until nums.size) {
                 nums[i] = 0
