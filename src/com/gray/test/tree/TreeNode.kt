@@ -2,6 +2,11 @@ package com.gray.test.tree
 
 import java.util.*
 
+class Tree<T>(var value: T) {
+    var left: Tree<T>? = null
+    var right: Tree<T>? = null
+}
+
 class TreeNode(var `val`: Int) {
     var left: TreeNode? = null
     var right: TreeNode? = null
