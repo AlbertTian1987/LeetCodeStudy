@@ -16,21 +16,11 @@ fun bellmanFord(origin: Int, vertexCount: Int, adjacentEdges: HashMap<Int, Array
     val dist = IntArray(vertexCount) { Int.MAX_VALUE }
     dist[origin] = 0
     repeat(vertexCount - 1) {
-        adjacentEdges.values.asSequence().flatMap { it.asSequence() }.forEach { edge ->
-            val (begin, end, weight) = edge
-            if (dist[begin] != Int.MAX_VALUE && dist[begin] + weight < dist[end]) {
-                dist[end] = dist[begin] + weight
-            }
-        }
+        adjacentEdges.keys.asSequence().filter { dist[it] != Int.MAX_VALUE }
+                .flatMap { adjacentEdges[it]!!.asSequence() }
+                .filter { dist[it.begin] + it.weight < dist[it.end] }
+                .forEach { dist[it.end] = dist[it.begin] + it.weight }
     }
-
-    adjacentEdges.values.asSequence().flatMap { it.asSequence() }.forEach { edge ->
-        val (begin, end, weight) = edge
-        if (dist[begin] != Int.MAX_VALUE && dist[begin] + weight < dist[end]) {
-            println("存在环")
-        }
-    }
-
     println(Arrays.toString(dist))
 }
 
