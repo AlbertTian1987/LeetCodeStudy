@@ -4,9 +4,11 @@ import java.util.*
 
 /**
  * 生成最小生成树的prim算法
- * 1.先把1个顶点从V集合里删除，加入到S集合中
- * 2.V集合里的顶点和S集合里的顶点所有构成的边里，找出权重最小的边，将连成边的顶点从V集合里删除，加入S集合
- * 3.V集合不空，继续第二步
+ *
+ * 先将顶点1放入集合S
+ *
+ * 重复vertexCount-1次
+ *      在边集里将所有begin在集合S里的，但end不在S里的，weight最小的边，加入集合S
  *
  * 算法时间复杂度O(n^2)
  */
@@ -14,24 +16,14 @@ fun prim(vertexCount: Int, adjacentEdges: HashMap<Int, ArrayList<Edge>>) {
     val visited = BooleanArray(vertexCount)
     visited[0] = true
     repeat(vertexCount - 1) {
-        var minDist = Int.MAX_VALUE
-        var begin = -1
-        var end = -1
-        for (u in 0 until vertexCount) {
-            val edge = adjacentEdges[u] ?: continue
-            if (visited[u]) {
-                val e = edge.filter { !visited[it.end] }.sortedBy { it.weight }.firstOrNull()
-                e?.let {
-                    if (e.weight < minDist) {
-                        minDist = e.weight
-                        begin = e.begin
-                        end = e.end
-                    }
-                }
-            }
-        }
-        println("choose edge(${begin + 1},${end + 1}) w = $minDist")
-        visited[end] = true
+        val edge = adjacentEdges.keys.asSequence()
+                .filter { visited[it] }
+                .flatMap { adjacentEdges[it]!!.asSequence() }
+                .filter { !visited[it.end] }
+                .sortedBy { it.weight }
+                .first()
+        println("choose edge(${edge.begin + 1},${edge.end + 1}) w = ${edge.weight}")
+        visited[edge.end] = true
     }
 }
 
