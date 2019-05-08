@@ -17,15 +17,13 @@ import com.gray.test.other.UF
 fun kruskal(vertexCount: Int, edges: ArrayList<Edge>) {
     val uf = UF(vertexCount)
     edges.sortBy { it.weight }
-    var edge = 0
-    while (edge < vertexCount - 1) {
-        val data = edges.removeAt(0)
-        if (uf.connected(data.begin, data.end)) {
-            continue
-        }
-        uf.union(data.begin, data.end)
-        println("add edge(${data.begin + 1},${data.end + 1}) w=${data.weight}")
-        edge++
+    repeat(vertexCount - 1) {
+        edges.asSequence()
+                .filter { !uf.connected(it.begin, it.end) }
+                .forEach {
+                    uf.union(it.begin, it.end)
+                    println("choose edge(${it.begin + 1},${it.end + 1}) w = ${it.weight}")
+                }
     }
 }
 
