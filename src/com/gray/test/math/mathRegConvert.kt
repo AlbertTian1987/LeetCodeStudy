@@ -13,6 +13,9 @@ fun isOperate(c: Char): Boolean {
 }
 
 fun Char.isGEOperate(other: Char): Boolean {
+    if (this == '(') {
+        return false
+    }
     if (this == '*' || this == '/') {
         return true
     }
@@ -25,6 +28,13 @@ fun Char.isGEOperate(other: Char): Boolean {
  * 规则：从左到右遍历中缀表达式的每个数字和符号，若是数字就输出，即成为后缀表达式的一部分；
  * 若是符号，则判断其与栈顶符号的优先级，是右括号或优先级低于找顶符号（乘除优先加减）
  * 则栈顶元素依次出找并输出，并将当前符号进栈，一直到最终输出后缀表达式为止。
+ *
+ * 有括号的规则
+ * 1.左括号一定进栈
+ * 2.在栈顶的左括号在不是右括号的情况下不出栈
+ * 3.右括号不进栈
+ * 4.右括号和栈顶元素比较时，一直取元素，直到左括号也被取出
+ * 5.左右括号都不出现在后缀表达式中
  */
 fun middleToEnd(reg: String) {
     val ret = StringBuilder()
@@ -32,16 +42,21 @@ fun middleToEnd(reg: String) {
     for (i in 0 until reg.length) {
         val c = reg[i]
         if (isOperate(c)) {
-            if (c == '(') {
-                continue
-            }
-            while (stack.isNotEmpty()) {
-                val pop = stack.peek()
-                if (c == ')' || pop.isGEOperate(c)) {
-                    stack.pop()
+            while (c != '(' && stack.isNotEmpty()) {
+                if (c == ')') {
+                    val pop = stack.pop()
+                    if (pop == '(') {
+                        break
+                    }
                     ret.append(pop)
                 } else {
-                    break
+                    val pop = stack.peek()
+                    if (pop.isGEOperate(c)) {
+                        stack.pop()
+                        ret.append(pop)
+                    } else {
+                        break
+                    }
                 }
             }
             if (c != ')') {
@@ -63,17 +78,24 @@ fun middleToTree(reg: String): ExpTree {
     val valueStack = LinkedList<ExpTree>()
     for (i in 0 until reg.length) {
         val c = reg[i]
-        if (c == '(') {
-            continue
-        }
         if (isOperate(c)) {
-            if (operStack.isNotEmpty()) {
-                val pop = operStack.peek()!!
-                if (c == ')' || pop.value.isGEOperate(c)) {
+            if (c != '(' && operStack.isNotEmpty()) {
+                if (c == ')') {
+                    while (operStack.peek()!!.value != '(') {
+                        val pop = operStack.pop()
+                        pop.right = valueStack.pop()
+                        pop.left = valueStack.pop()
+                        valueStack.push(pop)
+                    }
                     operStack.pop()
-                    pop.right = valueStack.pop()
-                    pop.left = valueStack.pop()
-                    valueStack.push(pop)
+                } else {
+                    val pop = operStack.peek()!!
+                    if (pop.value.isGEOperate(c)) {
+                        operStack.pop()
+                        pop.right = valueStack.pop()
+                        pop.left = valueStack.pop()
+                        valueStack.push(pop)
+                    }
                 }
             }
             if (c != ')') {
@@ -112,11 +134,12 @@ fun endToMiddle(reg: String) {
 fun main() {
     middleToEnd("a+b*c-d/e")
     middleToEnd("(a+b)*c-d/e")
+    middleToEnd("a*(b+c)/d")
 
     endToMiddle("abc*+de/-")
     endToMiddle("ab+c*de/-")
 
-    printTree(middleToTree("a+b*c-d/e"))
+    printTree(middleToTree("a*(b+c)/d"))
     println()
-    printTree(middleToTree("(a+b)*c-d/e"))
+    printTree(middleToTree("a+(b*c+d)"))
 }
