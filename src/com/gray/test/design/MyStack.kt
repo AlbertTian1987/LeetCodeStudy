@@ -20,8 +20,8 @@ import java.util.*
 class MyStack {
 
     /** Initialize your data structure here. */
-    var inQ: Queue<Int> = LinkedList<Int>()
-    var outQ: Queue<Int> = LinkedList<Int>()
+    private var inQ: Queue<Int> = LinkedList<Int>()
+    private var outQ: Queue<Int> = LinkedList<Int>()
 
     /** Push element x onto stack. */
     fun push(x: Int) {
