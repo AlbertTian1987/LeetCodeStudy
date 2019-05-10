@@ -50,12 +50,14 @@ fun toHex(num: Int): String {
     if (num == 0) {
         return "0"
     }
-    if (num == -2147483648) {
-        return "80000000"
-    }
     val sign = if (num > 0) 1 else -1
     val ret = StringBuilder()
     var n = abs(num)
+    var isIntMin = false
+    if (n < 0) {
+        isIntMin = true
+        n = abs(num + 1)
+    }
     while (n > 0) {
         val k = numberToHex(n % 16)
         ret.append(k)
@@ -64,7 +66,11 @@ fun toHex(num: Int): String {
     if (sign == 1) {
         return ret.reverse().toString()
     }
-    return hexMinus("000000001", ret.toString()).reversed()
+    val s = hexMinus("000000001", ret.toString())
+    if (isIntMin) {
+        return hexMinus(s, "1").reversed()
+    }
+    return s.reversed()
 }
 
 fun hexMinus(big: String, small: String): String {
@@ -101,6 +107,6 @@ fun main() {
 //    println(toHex(-1))
 //    println(toHex(1))
 //    println(toHex(26))
-    println(toHex(Int.MAX_VALUE))
-    println(Int.MIN_VALUE)
+    println(toHex(Int.MIN_VALUE))
+    println(Int.MIN_VALUE / 16)
 }
