@@ -71,9 +71,6 @@ fun getTimeComposite(lights: Int, led: Int, max: Int, twoDigit: Boolean): List<S
             return
         }
         for (i in offset until led) {
-            if (flag[i] == 1) {
-                continue
-            }
             flag[i] = 1
             val hour = calNum(flag)
             if (hour > max) {
