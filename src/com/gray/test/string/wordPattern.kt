@@ -29,8 +29,8 @@ package com.gray.test.string
 
 fun wordPattern(pattern: String, str: String): Boolean {
     val words = str.split(' ')
-    if (words.size == 1) {
-        return pattern.length == 1
+    if (words.size != pattern.length) {
+        return false
     }
     val samePatternGroup = hashMapOf<Char, ArrayList<Int>>()
     val wordMap = hashMapOf<String, Char>()
@@ -39,11 +39,6 @@ fun wordPattern(pattern: String, str: String): Boolean {
         list.add(i)
         samePatternGroup[c] = list
     }
-
-    if (words.size != samePatternGroup.values.flatMap { it.asIterable() }.count()) {
-        return false
-    }
-
     for ((c, list) in samePatternGroup) {
         val word = words[list[0]]
         if (wordMap.containsKey(word)) {
