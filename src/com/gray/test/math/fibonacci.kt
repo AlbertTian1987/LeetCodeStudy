@@ -31,6 +31,7 @@ fun fibonacci1(n: Int): Int {
     return i
 }
 
+
 /**
  * 尾递归
  */
@@ -93,8 +94,20 @@ fun fibonacci2(pow: Int): Int {
     return res[0][1]
 }
 
+/**
+ * 迭代的写法
+ */
+fun fibonacci3(n: Int): Int {
+    var i = 0
+    var j = 1
+    repeat(n) {
+        j = i + j.also { i = j }
+    }
+    return i
+}
 fun main() {
     println(measureNanoTime { fibonacci1(6) })
     println(fibonacci2(6))
+    println(fibonacci3(6))
     println(fibonacci(0, 1, 0, 9898))
 }
