@@ -1,7 +1,5 @@
 package com.gray.test.math
 
-import kotlin.math.pow
-
 /**
  * 476. 数字的补数
  * 给定一个正整数，输出它的补数。补数是对该数的二进制表示取反。
@@ -23,12 +21,12 @@ import kotlin.math.pow
 fun findComplement(num: Int): Int {
     var ret = 0
     var p = num
-    var digit = 0
+    var digit = 1
     while (p > 0) {
         if (p % 2 == 0) {
-            ret += 2.0.pow(digit).toInt()
+            ret += digit
         }
-        digit++
+        digit *= 2
         p = p ushr 1
     }
     return ret
