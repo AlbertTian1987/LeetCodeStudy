@@ -30,6 +30,7 @@ fun nxPreorder2(root: XNode?): List<Int> {
     }
     val ret = arrayListOf<Int>()
     val stack = LinkedList<XNode>()
+    stack.push(root)
     var cur: XNode? = root
     while (cur != null || stack.isNotEmpty()) {
         if (cur != null) {
