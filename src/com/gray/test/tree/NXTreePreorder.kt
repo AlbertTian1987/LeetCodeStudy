@@ -12,7 +12,7 @@ fun nxPreorder(root: XNode?): List<Int> {
         }
         list.add(root.`val`)
         val children = root.children
-        if (children != null && children.isNotEmpty()) {
+        if (children.isNotEmpty()) {
             for (c in children) {
                 preorder(c, list)
             }
@@ -36,7 +36,7 @@ fun nxPreorder2(root: XNode?): List<Int> {
         if (cur != null) {
             ret.add(cur.`val`)
             val children = cur.children
-            if (children == null || children.isEmpty()) {
+            if (children.isEmpty()) {
                 cur = null
             } else {
                 cur = children.first()

@@ -11,14 +11,14 @@ package com.gray.test.tree
  * 树的深度不会超过 1000。
  * 树的节点总不会超过 5000。
  * */
-data class XNode(val `val`: Int, var children: List<XNode>? = null)
+data class XNode(val `val`: Int, val children: List<XNode>)
 
 fun maxDepth(root: XNode?): Int {
     if (root == null) {
         return 0
     }
     val children = root.children
-    if (children == null || children.isEmpty()) {
+    if (children.isEmpty()) {
         return 1
     }
     var depth = 0
