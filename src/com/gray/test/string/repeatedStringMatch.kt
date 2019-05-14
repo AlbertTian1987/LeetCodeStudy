@@ -27,8 +27,8 @@ fun repeatedStringMatch(A: String, B: String): Int {
     if (i == -1) {
         return -1
     }
-    val size = i + bLen - 1
-    return size / aLen + 1
+    val endIndex = i + bLen - 1
+    return endIndex / aLen + 1
 }
 
 fun main() {
