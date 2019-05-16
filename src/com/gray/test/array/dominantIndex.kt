@@ -22,6 +22,9 @@ package com.gray.test.array
  * nums 的长度范围在[1, 50].
  * 每个 nums[ i] 的整数范围在 [0, 99].
  * */
+/**
+ * 第一次做，用了两次循环
+ */
 fun dominantIndex(nums: IntArray): Int {
     var index = 0
     var max = nums[index]
@@ -43,7 +46,28 @@ fun dominantIndex(nums: IntArray): Int {
     return index
 }
 
+/**
+ * 只需要找到最大和第二大的数，最大>=第二大的两倍即可
+ */
+fun dominantIndex2(nums: IntArray): Int {
+    var index = -1
+    var max = -1
+    var secondMax = -1
+    for (i in 0 until nums.size) {
+        val num = nums[i]
+
+        if (num > max) {
+            secondMax = max
+            max = num
+            index = i
+        } else if (num > secondMax) {
+            secondMax = num
+        }
+    }
+    return if (max >= 2 * secondMax) index else -1
+}
+
 fun main() {
-    println(dominantIndex(intArrayOf(3, 6, 1, 0)))
-    println(dominantIndex(intArrayOf(0, 1, 1, 2)))
+    println(dominantIndex2(intArrayOf(3, 6, 1, 0)))
+    println(dominantIndex2(intArrayOf(0, 1, 1, 2)))
 }
