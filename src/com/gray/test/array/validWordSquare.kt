@@ -71,13 +71,18 @@ package com.gray.test.array
  */
 fun validWordSquare(words: List<String>): Boolean {
     val r = words.size
-    for (i in 0 until r) {
-        val size = words[i].length
-        if (size > r) {
+    if (words[0].length > r) {
+        return false
+    }
+    for (i in 1 until r) {
+        if (words[i].length > r || words[i].length > words[i - 1].length) {
             return false
         }
+    }
+    for (i in 0 until r) {
+        val size = words[i].length
         for (j in 0 until size) {
-            if (words[j].length <= i || words[j][i] != words[i][j]) {
+            if (words[j][i] != words[i][j]) {
                 return false
             }
         }
@@ -90,4 +95,5 @@ fun main() {
     println(validWordSquare(arrayListOf("abcd", "bnrt", "crm", "dt")))
     println(validWordSquare(arrayListOf("ball", "area", "read", "lady")))
     println(validWordSquare(arrayListOf("abc", "b")))
+    println(validWordSquare(arrayListOf("a", "ab")))
 }
